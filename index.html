@@ -1,44 +1,453 @@
 <!DOCTYPE html>
 <html lang="ml">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Great Escape Room</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ദി ഗ്രേറ്റ് എസ്കേപ്പ് റൂം — കേരള</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Malayalam:wght@400;600;700&family=Cinzel:wght@600;800&display=swap" rel="stylesheet">
+  <meta name="description" content="രണ്ട് അധ്യായങ്ങളുള്ള Escape Room — അധ്യായം 1: സ്വയം കണ്ടെത്തി രക്ഷപ്പെട്ടുക. അധ്യായം 2: രോഗത്തിനൊരു ‘ക്യൂർ’ കണ്ടെത്തി അടച്ചുപൂട്ടുക.">
   <style>
-    body {
-      background: linear-gradient(to bottom right, #000000, #1c1c1c);
-      color: white;
-      font-family: 'Poppins', sans-serif;
+    :root{ --bg:#06060b; --text:#e8e7ff; --muted:#a6a6c9; --accent:#a855f7; --accent-2:#22d3ee; }
+    *{box-sizing:border-box}
+    html,body{margin:0; padding:0; background:var(--bg); color:var(--text); font-family:'Noto Sans Malayalam', system-ui, Segoe UI, Roboto; scroll-behavior:smooth}
+    a{color:inherit}
+
+    /* Landing */
+    .landing{position:relative; height:100vh; overflow:hidden}
+    .landing .bg{position:absolute; inset:-5%; background:url('background.jpg') top center/cover no-repeat; filter:brightness(.85) contrast(1.1); transform:scale(1.05); transition:transform .5s ease; z-index:1}
+    .landing .tint{position:absolute; inset:0; background:rgba(10,5,20,.55); z-index:2}
+    #fog{position:absolute; top:0; left:0; width:200%; height:200%; background:url('background'); background-size:cover; background-repeat:repeat; opacity:.35; mix-blend-mode:screen; z-index:3; animation:fogDrift 120s linear infinite}
+    @keyframes fogDrift{from{background-position:0 0} to{background-position:-800px -400px}}
+    .light{position:absolute; inset:0; z-index:4; pointer-events:none; background:radial-gradient(circle 300px at 50% 50%, rgba(255,255,255,.08), transparent 75%); mix-blend-mode:lighten}
+    .center{position:absolute; inset:0; z-index:5; display:grid; place-items:center; text-align:center; padding:24px}
+    h1.title{font-family:Cinzel,serif; font-size:clamp(2.2rem,6vw,4rem); text-shadow:0 0 24px rgba(168,85,247,.45)}
+    .lead{color:#cfd0ff; opacity:.92; max-width:820px; margin:10px auto 18px; line-height:1.6}
+    .enter-btn{display:inline-flex; align-items:center; gap:10px; border:1px solid rgba(168,85,247,.55); padding:14px 22px; border-radius:999px; text-decoration:none; letter-spacing:.6px; transition:.25s ease; background:rgba(255,255,255,.03)}
+    .enter-btn:hover{background:linear-gradient(90deg, rgba(168,85,247,.25), rgba(34,211,238,.25)); transform:translateY(-1px); box-shadow:0 0 24px rgba(168,85,247,.35)}
+
+    /* Global */
+    .grain:before{content:""; position:fixed; inset:0; pointer-events:none; opacity:.08; mix-blend-mode:soft-light; background-image:url('background'); background-size:400px; z-index:1}
+    .glow{filter:drop-shadow(0 0 12px rgba(168,85,247,.35)) drop-shadow(0 0 28px rgba(34,211,238,.15))}
+    .section{position:relative; padding:96px 24px; max-width:1200px; margin:0 auto}
+    .split{display:grid; gap:28px; grid-template-columns:1.2fr 1fr}
+    @media (max-width:1000px){.split{grid-template-columns:1fr}}
+    .btn{display:inline-flex; align-items:center; gap:10px; border:1px solid rgba(168,85,247,.45); padding:14px 20px; border-radius:999px; text-decoration:none; letter-spacing:.3px; transition:.25s ease}
+    .btn:hover{background:linear-gradient(90deg, rgba(168,85,247,.25), rgba(34,211,238,.25)); transform:translateY(-1px); box-shadow:0 0 24px rgba(168,85,247,.35)}
+    .btn.secondary{border-color:rgba(255,255,255,.15); color:#cfd0ff}
+
+    /* Nav */
+    .nav{position:sticky; top:0; z-index:50; backdrop-filter:saturate(140%) blur(8px); background:linear-gradient(180deg, rgba(6,6,11,.9), rgba(6,6,11,.6)); border-bottom:1px solid #141429}
+    .nav-inner{max-width:1200px; margin:0 auto; padding:14px 20px; display:flex; align-items:center; justify-content:space-between}
+    .brand{display:flex; align-items:center; gap:10px; font-family:Cinzel,serif; font-weight:800; letter-spacing:.5px}
+    .brand .sig{width:34px; height:34px; border-radius:8px; background:radial-gradient(circle at 30% 30%, #a855f7, transparent 60%), radial-gradient(circle at 70% 70%, #22d3ee, transparent 60%); box-shadow:0 0 32px rgba(168,85,247,.5) inset}
+    .nav a{margin-left:18px; font-size:.95rem; opacity:.9; text-decoration:none}
+    .nav a:hover{opacity:1}
+
+    /* Hero */
+    .hero{position:relative; min-height:82vh; display:grid; place-items:center; text-align:center; overflow:hidden}
+    .hero:before{content:""; position:absolute; inset:-20%; background:url('background') top center/cover no-repeat; transform:scale(1.05); filter:brightness(.6) contrast(1.1) saturate(1.05); animation:slowZoom 38s ease-in-out infinite alternate}
+    .hero:after{content:""; position:absolute; inset:0; background:radial-gradient(1000px 650px at 50% 10%, rgba(168,85,247,.12), transparent 60%), radial-gradient(900px 600px at 50% 120%, rgba(2,8,23,.9), rgba(2,8,23,.95))}
+    @keyframes slowZoom{from{transform:scale(1.02)} to{transform:scale(1.09)}}
+    .hero-inner{position:relative; z-index:2; max-width:900px; padding:24px}
+    .kicker{font-size:.9rem; color:var(--muted); letter-spacing:2px}
+    .title-hero{font-family:Cinzel,serif; font-size:clamp(2rem,5vw,3.6rem); line-height:1.15; margin:14px 0 8px; text-shadow:0 0 18px rgba(168,85,247,.45)}
+    .ml{color:#d9caff}
+    .subtitle{color:#cfd0ff; opacity:.92}
+    .pulse{display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--accent-2); box-shadow:0 0 0 0 rgba(34,211,238,.7); animation:pulse 2.2s infinite}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,211,238,.5)} 70%{box-shadow:0 0 0 20px rgba(34,211,238,0)} 100%{box-shadow:0 0 0 0 rgba(34,211,238,0)}}
+    .cta{margin-top:22px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
+
+    /* File */
+    .file{background:linear-gradient(180deg, #0b0b17, #090914); border:1px solid #15152b; border-radius:16px; padding:22px; position:relative}
+    .file:before{content:"CLASSIFIED"; position:absolute; top:14px; right:-10px; transform:rotate(12deg); font-weight:800; letter-spacing:2px; color:rgba(239,68,68,.15); border:3px solid rgba(239,68,68,.25); padding:4px 10px; border-radius:6px}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Courier New', monospace; color:#b7b8e6}
+
+    /* Grid & cards */
+    .grid{display:grid; gap:18px; grid-template-columns:1fr 1fr}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}}
+    .card{background:linear-gradient(180deg,#0b0b18,#0a0a13); border:1px solid #14142a; border-radius:16px; padding:18px; position:relative; overflow:hidden}
+    .card h3{font-family:Cinzel,serif; margin:6px 0 8px}
+    .badge{position:absolute; top:12px; right:12px; font-size:.75rem; padding:6px 10px; border:1px solid rgba(255,255,255,.12); border-radius:999px; color:#cfd0ff}
+    .card .tags{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .tag{font-size:.75rem; border:1px solid #232349; padding:4px 8px; border-radius:999px; opacity:.9}
+
+    /* --------- Infected / Locked Chapter 2 styles (ONLY EDIT ADDED) --------- */
+    .infected {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(239,68,68,.3);
+      background: linear-gradient(180deg,#130b0b,#0a0000);
+      box-shadow: 0 0 16px rgba(239,68,68,.25);
+      color: #f2cfcf;
+    }
+    .infected::before {
+      content: "☣";
+      position: absolute;
+      font-size: 9rem;
+      color: rgba(239,68,68,0.08);
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-20deg);
+      pointer-events: none;
+      animation: slowPulse 6s infinite ease-in-out;
+    }
+    @keyframes slowPulse { 0%,100%{opacity:.15} 50%{opacity:.4} }
+    .infected::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(239,68,68,.12), transparent 70%);
+      mix-blend-mode: screen;
+      animation: pulseRed 4s infinite ease-in-out;
+    }
+    @keyframes pulseRed { 0%,100%{opacity:.3} 50%{opacity:.7} }
+    .strike {
+      text-decoration: line-through;
+      text-decoration-thickness: 2px;
+      text-decoration-color: rgba(239,68,68,.6);
+      color: #e1c7c7;
+      filter: drop-shadow(0 0 6px rgba(239,68,68,.35));
+    }
+    .warning {
+      position: relative;
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: rgba(239,68,68,.1);
+      border: 1px dashed rgba(239,68,68,.4);
+      border-radius: 8px;
+      color: #ffcccc;
+      font-size: .9rem;
+      z-index: 2;
       text-align: center;
-      padding-top: 100px;
+      font-weight: 600;
+      animation: flicker 2.8s infinite;
     }
-    h1 { font-size: 1.8em; color: #ff2a2a; }
-    p { font-size: 1em; color: #ddd; margin-bottom: 50px; }
-    .btn {
-      display: block;
-      width: 80%;
-      max-width: 300px;
-      margin: 15px auto;
-      padding: 15px;
-      border-radius: 10px;
-      background-color: #222;
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      transition: 0.3s;
+    @keyframes flicker { 0%,18%,22%,25%,53%,57%,100%{opacity:1} 20%,24%,55%{opacity:.55} }
+    .glitch { animation: glitchFlicker 6s infinite steps(2); }
+    @keyframes glitchFlicker {
+      0%,90%,100% { filter: none; }
+      92% { filter: hue-rotate(15deg); }
+      96% { transform: translate(-1px, 2px) scale(0.99); }
+      98% { transform: none; }
     }
-    .btn:hover {
-      background-color: #ff2a2a;
-      transform: scale(1.05);
+    .access-denied {
+      position: absolute; inset: 0; display:flex; align-items:center; justify-content:center;
+      font-family: "Cinzel", serif; font-weight:800; font-size:1.5rem; letter-spacing:2px;
+      color: rgba(239,68,68,0.9); background: rgba(0,0,0,0.75);
+      opacity: 0; transition: opacity .4s; z-index:10; border-radius:16px;
     }
+    .infected:hover .access-denied,
+    .infected:focus-within .access-denied {
+      opacity: 1; animation: accessGlitch .7s steps(2) 1;
+    }
+    @keyframes accessGlitch {
+      0%,20%,40%,60%,80%,100%{opacity:1}
+      10%,30%,50%,70%,90%{opacity:.3}
+    }
+    /* ----------------------------------------------------------------------- */
+
+    /* Ticket strip */
+    .ticket{display:grid; gap:18px; grid-template-columns:1fr .9fr; align-items:center; border:1px dashed #2b2b52; border-radius:18px; padding:18px; background:linear-gradient(180deg,#0b0b17,#0a0a14)}
+    @media (max-width:900px){.ticket{grid-template-columns:1fr}}
+
+    /* Footer */
+    footer{padding:36px 20px; background:#07070f; border-top:1px solid #13132a; color:#aeb0ff}
+
+    /* Reveal */
+    .reveal{opacity:0; transform:translateY(14px); transition:opacity .7s ease, transform .7s ease}
+    .reveal.show{opacity:1; transform:none}
+
+    .dangerPulse{animation:danger 1s infinite}
+    @keyframes danger{0%{box-shadow:0 0 0 0 rgba(239,68,68,.3)} 70%{box-shadow:0 0 0 16px rgba(239,68,68,0)} 100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}}
   </style>
 </head>
 <body>
-  <h1>ദി ഗ്രേറ്റ് എസ്കേപ് റൂം</h1>
-  <p>മനസ്സിലും ചുറ്റും ഇരുട്ട് മാത്രം... സത്യം കണ്ടെത്തണമെങ്കിൽ ഭയവും മറക്കണം!</p>
+  <!-- PAGE 1 -->
+  <section class="landing" aria-label="Portal">
+    <div class="bg" id="landingBg"></div>
+    <div class="tint"></div>
+    <div id="fog"></div>
+    <div class="light" id="landingLight"></div>
+    <div class="center">
+      <div>
+        <h1 class="title">🕯️ ദി ഗ്രേറ്റ് എസ്കേപ്പ് റൂം 🗝️</h1>
+        <p class="lead">“മനസ്സിലും ചുറ്റും ഇരുട്ട് മാത്രം… ഓർമ്മ നഷ്ടപ്പെട്ട നീ… സത്യം കണ്ടെത്തണമെങ്കിൽ, ഭയവും മറക്കണം.”</p>
+        <a class="enter-btn" href="#home" id="enterBtn">അധ്യായം 1 ആരംഭിക്കുക</a>
+      </div>
+    </div>
+  </section>
 
-  <a href="https://www.instagram.com/YOURINSTAGRAM" class="btn">📸 Instagram</a>
-  <a href="https://goo.gl/maps/YOURMAPLINK" class="btn">🧭 Find Us</a>
-  <a href="https://forms.gle/YOURFORMLINK" class="btn">🧾 Book Now</a>
+  <!-- PAGE 2 -->
+  <div id="home" class="grain"></div>
+
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="brand glow"><span class="sig"></span> The Great Escape Room</div>
+      <nav>
+        <a href="#case">കഥ</a>
+        <a href="#missions">റൂമുകൾ</a>
+        <a href="#tickets">ടിക്കറ്റ്സ്</a>
+        <a href="#findus">എവിടെ വരണം</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="kicker">രണ്ട് അധ്യായങ്ങൾ <span class="pulse"></span></div>
+      <h1 class="title-hero">
+        അധ്യായം 1 — <em>The Awakening</em><br>
+        <span class="ml">സ്വയം കണ്ടെത്തി — മുറിയിൽ നിന്ന് രക്ഷപ്പെടുക</span>
+      </h1>
+      <p class="subtitle">
+        അധ്യായം 2 — <em>The Cure Lab</em> (Sequel/Upgrade): രോഗത്തിന്റെ ഉത്ഭവം പിന്തുടരുക. ഫോർമുല കണ്ടെത്തുക. പകർച്ച അടക്കുക.
+      </p>
+      <div class="cta">
+        <a class="btn" href="https://www.instagram.com/thegreatescaperooms?igsh=czVla2thdXl3N3Q3" target="_blank" rel="noopener">ഇൻസ്റ്റാഗ്രാം 🔗</a>
+        <a class="btn secondary" id="bookNowTop" href="https://calendly.com/mali1996mali/the-great-escape-room-chapter-1" target="_blank" rel="noopener">ഇപ്പോൾ ബുക്ക് ചെയ്യുക 🗝️</a>
+        <a class="btn" href="#findus">മാപ്പിൽ കാണുക 📍</a>
+        <!-- Mute/Play button on second page -->
+        <button class="btn" id="muteBtn" type="button">🔇 മ്യൂട്ട്</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section id="case" class="section reveal">
+    <div class="split">
+      <!-- LEFT SIDE: LORE DOSSIER -->
+      <div class="file">
+        <h2 class="glow" style="font-family:Cinzel,serif; margin:0 0 12px">ലോർ ഡോസിയർ</h2>
+        <p class="mono">ഉത്ഭവം: കുളത്തിനരികിലെ പഴയ കണ്ടം → ആയുർവേദാശ്രമം → മെന്റൽ അസൈലം → അടച്ചുപൂട്ടൽ → വാർഡ്.</p>
+        <p style="margin-top:10px">
+          നിങ്ങൾ ഉണരുന്നത് ഓർമ്മകളില്ലാതെ. പേപ്പറുകളും മറ്റു സൂചനകളും പറയുന്നു — <strong>ശാസ്ത്രം</strong> + <strong>ആഭിചാരം</strong> ചേർത്ത് ചികിത്സിച്ചു. നാട്ടുകാർ ശാപമെന്നു പറഞ്ഞു; ഡോക്ടർമാർ സയൻസ് എന്നും. പക്ഷേ അത് പടർന്നു.
+        </p>
+        <ul style="margin:12px 0 0 18px; line-height:1.9">
+          <li><strong>അധ്യായം 1:</strong> നിങ്ങൾ ആരാണെന്ന് കണ്ടുപിടിക്കുക, എമർജൻസി കീ കണ്ടുപിടിക്കുക, കീ ഉപയോഗിച്ച് രക്ഷപ്പെടുക.</li>
+          <li><strong>അധ്യായം 2:</strong> ക്യൂർ ഡികോഡ് ചെയ്യുക, ക്യൂർ സിന്തസൈസ് ചെയ്യുക.</li>
+          <li>എല്ലാ ക്ലൂകളും “യഥാർത്ഥ” വസ്തുക്കൾ — fake puzzle feel ഒന്നുമില്ല.</li>
+        </ul>
+      </div>
+
+      <!-- RIGHT SIDE: REVIEWS + VIDEO -->
+      <div>
+        <div class="reviews glow" style="margin-bottom:18px; border:1px solid #232349; border-radius:12px; padding:16px 18px; background:linear-gradient(180deg,#0a0a13,#0b0b18); box-shadow:0 0 12px rgba(34,211,238,0.15), inset 0 0 18px rgba(168,85,247,0.1);">
+          <h3 style="margin-top:0; color:#d9caff; font-family:Cinzel,serif; font-size:1.2rem;">ലൈവ് അഭിപ്രായങ്ങൾ 🜂</h3>
+          <div id="typebox" class="type mono" style="font-size:1rem; color:#b7b8e6; line-height:1.6; min-height:50px;"></div>
+          <p style="font-size:0.85rem; color:#888bc9; margin-top:8px;">.................................................................</p>
+        </div>
+
+        <video src="sample.mp4"
+          autoplay muted loop playsinline
+          style="width:100%; border-radius:16px; border:1px solid #15152b; box-shadow:0 0 20px rgba(168,85,247,.15);"></video>
+        <p style="color:#aeb0ff; opacity:.85; margin-top:10px;">ബ്രിഫിങ് റീൽ — ഫീൽഡ് ലോഗുകളിൽ നിന്നും.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROOMS -->
+  <section id="missions" class="section reveal">
+    <h2 class="glow" style="font-family:Cinzel,serif; margin:0 0 18px">നിങ്ങളുടെ അധ്യായം തിരഞ്ഞെടുക്കൂ</h2>
+    <div class="grid">
+      <!-- Chapter 1 (unchanged) -->
+      <div class="card">
+        <span class="badge">45 മിനിറ്റ്</span>
+        <h3>അധ്യായം 1 — The Awakening</h3>
+        <p><strong>സ്വയം കണ്ടെത്തി & രക്ഷപ്പെടുക:</strong> നിങ്ങൾ ആരാണെന്ന് കണ്ടുപിടിക്കുക, എമർജൻസി കീ കണ്ടുപിടിക്കുക, കീ ഉപയോഗിച്ച് രക്ഷപ്പെടുക. യാഥാർത്ഥ്യം-കേന്ദ്രീകൃത ഏകമുറി.</p>
+        <div class="tags"><span class="tag">Mild Horror</span><span class="tag">Folklore</span><span class="tag">1–6 കളിക്കാർ</span></div>
+      </div>
+
+      <!-- Chapter 2 (ONLY edited to infected/locked) -->
+      <div class="card infected glitch">
+        <span class="badge">അടച്ചിരിക്കുന്നു</span>
+        <h3 class="strike">അധ്യായം 2 — The Cure Lab</h3>
+        <p><strong>ക്യൂർ കണ്ടെത്തുക:</strong> ലാബ് ലോഗുകൾ, ചടങ്ങ്-സമയക്രമം, ഡോസുകൾ — എല്ലാം ചേർത്ത് കൗണ്ടർ-ഏജന്റ് നിർമ്മിക്കുക; പകർച്ച അടക്കുക.</p>
+        <div class="warning">
+          ⚠️ രോഗബാധ അതിരു കടന്നു — ക്വാറന്റൈൻ പ്രോഗ്രസ്സ്.<br>
+          താൽക്കാലികമായി പ്രവേശനം അടച്ചിരിക്കുന്നു.
+        </div>
+        <div class="tags"><span class="tag">സയൻസ് × ചടങ്ങ്</span><span class="tag">ഉയർന്ന stake</span><span class="tag">3–8 കളിക്കാർ</span></div>
+        <div class="access-denied">🔒 ACCESS DENIED</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKETS -->
+  <section id="tickets" class="section reveal">
+    <div class="ticket" id="ticketStrip">
+      <div>
+        <h2 style="font-family:Cinzel,serif; margin:0 0 8px" class="glow">ടിക്കറ്റ്സും ഓഫറുകളും</h2>
+        <ul style="line-height:1.9; margin:8px 0 0 18px">
+          <li><strong>അധ്യായം 1:</strong> ₹600 (വർക്കിംഗ് ഡേ) / ₹700 (വാരാന്ത്യം)</li>
+          <li><strong>ഓഫർ:</strong> ₹600 /upto 2 people</li>
+          <li><strong>കോമ്പോ (1 → 2 അതേ ദിവസം):</strong> ₹1100 / വ്യക്തി</li>
+          <li>സ്റ്റുഡന്റ്സ്: <strong>10% ഓഫർ</strong> (Valid ID)</li>
+        </ul>
+        <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap">
+          <a class="btn" id="bookNow" href="https://calendly.com/mali1996mali/the-great-escape-room-chapter-1" target="_blank" rel="noopener">ഇപ്പോൾ ബുക്ക് ചെയ്യുക 🗝️</a>
+          <a class="btn secondary" href="https://wa.me/message/5CDOUF7DQSRXD1" target="_blank" rel="noopener">വാട്ട്സ്ആപ്പ് 💬</a>
+        </div>
+      </div>
+      <div class="file">
+        <p class="mono">Next Reset: <span id="resetTimer">--:--</span></p>
+        <p style="margin-top:8px">റൺസുകൾക്കിടയിൽ മുറി റീസെറ്റ് ചെയ്യും. റീസെറ്റ് സമയത്ത് ബുക്ക് ചെയ്താൽ അടുത്ത സ്ലോട്ടിലേക്ക് ഷിഫ്റ്റ് ചെയ്യും.</p>
+        <div style="margin-top:10px; font-size:.9rem; color:#aeb0ff">Live Slots 60s ൽ ഒരിക്കൽ അപ്‌ഡേറ്റ് ചെയ്യും.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIND US -->
+  <section id="findus" class="section reveal">
+    <h2 style="font-family:Cinzel,serif" class="glow">എവിടെ വരണം</h2>
+    <p style="color:#cfd0ff">പന്തളം, പത്തനംതിട്ട — കേരളം</p>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin:12px 0 22px">
+      <a class="btn" target="_blank" rel="noopener" href="https://share.google/iRgafIPmytJO0u0Vn">മാപ്പിൽ തുറക്കുക 📍</a>
+      <a class="btn secondary" target="_blank" rel="noopener" href="https://www.instagram.com/thegreatescaperooms?igsh=czVla2thdXl3N3Q3">ഇൻസ്റ്റാഗ്രാം 🔗</a>
+      <a class="btn" target="_blank" rel="noopener" href="https://calendly.com/mali1996mali/the-great-escape-room-chapter-1">തൽക്ഷണം ബുക്ക് ചെയ്യുക 🗝️</a>
+    </div>
+    <div class="split" style="align-items:start">
+      <div class="file">
+        <h3 style="margin:0 0 8px">വന്ന് ചേരാനുള്ള നിർദ്ദേശങ്ങൾ</h3>
+        <ul style="line-height:1.9; margin:0 0 0 18px">
+          <li>ബ്രിഫിങിന് <strong>15 മിനിറ്റ്</strong> മുമ്പായി എത്തുക.</li>
+          <li>6 PM കഴിഞ്ഞാൽ സമീപത്ത് പാർക്കിംഗ് ലഭ്യം.</li>
+          <li>ലെറ്റ് എൻട്രി → നിങ്ങളുടെ മിഷൻ സമയത്തിൽ നിന്ന് കുറയും.</li>
+        </ul>
+      </div>
+      <div class="file">
+        <h3 style="margin:0 0 8px">സേഫ്റ്റി</h3>
+        <ul style="line-height:1.9; margin:0 0 0 18px">
+          <li>jump-scare ഇല്ല.</li>
+          <li>എമർജൻസി എക്‌സിറ്റ് & സെഫ് വേഡ് ലഭ്യമാക്കും.</li>
+          <li>ആക്‌സസിബിലിറ്റി സഹായം വേണ്ടെങ്കിൽ മുമ്പ് അറിയിക്കുക.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="section" style="padding:0; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap">
+      <div>© <span id="year"></span> The Great Escape Room — Kerala</div>
+      <div style="opacity:.8">“ജീവിക്കാൻ ഭയം ചിലപ്പോൾ ആവശ്യമാണ്.”</div>
+    </div>
+  </footer>
+
+  <!-- Background Music -->
+  <audio id="bgm" preload="auto" loop>
+    <!-- Replace with your actual file path if different -->
+    <source src="abcd.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Landing motion & fog
+    const landingBg = document.getElementById('landingBg');
+    const fog = document.getElementById('fog');
+    const light = document.querySelector('.light');
+    let mx = innerWidth/2, my = innerHeight/2;
+    function move(e){
+      const x = (e.touches? e.touches[0].clientX : e.clientX) || mx;
+      const y = (e.touches? e.touches[0].clientY : e.clientY) || my;
+      mx=x; my=y;
+      const nx = x / innerWidth, ny = y / innerHeight;
+      landingBg.style.transform = `scale(1.05) translate(${(nx-.5)*20}px, ${(ny-.5)*20}px)`;
+      fog.style.backgroundPosition = `${-nx*400}px ${-ny*400}px`;
+      light.style.background = `radial-gradient(circle 300px at ${x}px ${y}px, rgba(255,255,255,.1), transparent 75%)`;
+    }
+    addEventListener('mousemove', move);
+    addEventListener('touchmove', move, {passive:true});
+
+    // Smooth scroll from Page 1 button
+    const enterBtn = document.getElementById('enterBtn');
+    enterBtn.addEventListener('click', ()=>{
+      startBgm(); // start on button click
+      document.querySelector('#home').scrollIntoView({behavior:'smooth'});
+    });
+
+    // Reveal on scroll
+    const els=[...document.querySelectorAll('.reveal')];
+    const io=new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){e.target.classList.add('show'); io.unobserve(e.target);}
+      })
+    },{threshold:.12});
+    els.forEach(el=>io.observe(el));
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Typing quotes
+    const lines=[
+      '“സ്റ്റാഫ് പ്രോട്ടോക്കോൾ തന്നെയാണ് അവസാന കീ.” — ടീം K',
+      '“അധ്യായം 2-ൽ കഥ പൂർണ്ണമായി ചേർന്നു.” — അനന്യ',
+      '“ഒരു ക്ലൂവും ഫേക്ക് പോലെയായിരുന്നില്ല.” — രാഹുൽ',
+      '“60+60 കോമ്പോ തന്നെ ബെസ്റ്റ്!” — പ്രിയ & അമൻ'
+    ];
+    const box=document.getElementById('typebox');
+    let li=0, ci=0; let erasing=false;
+    function typeLoop(){
+      if(!box) return;
+      const cur=lines[li];
+      if(!erasing){ ci++; box.innerHTML = cur.slice(0,ci) + '<span class="cursor"></span>'; if(ci>=cur.length){erasing=true; setTimeout(typeLoop,2200); return}}
+      else{ ci--; box.innerHTML = cur.slice(0,ci) + '<span class="cursor"></span>'; if(ci<=0){erasing=false; li=(li+1)%lines.length}}
+      setTimeout(typeLoop, erasing? 22 : 36);
+    }
+    typeLoop();
+
+    // Reset timer (visual only)
+    const timerEl=document.getElementById('resetTimer');
+    function pad(n){return n.toString().padStart(2,'0')}
+    function updateTimer(){
+      const now=new Date();
+      const block = now.getMinutes()%10; const remainMin=9-block; const remainSec=59-now.getSeconds();
+      if(timerEl) timerEl.textContent = pad(remainMin)+':'+pad(remainSec);
+      const totalLeft = remainMin*60 + remainSec; const dangerWindow=20;
+      if(totalLeft<=dangerWindow){
+        document.body.classList.add('dangerPulse');
+      } else {
+        document.body.classList.remove('dangerPulse');
+      }
+    }
+    setInterval(updateTimer, 500); updateTimer();
+
+    // -------- Background Music Controls --------
+    const bgm = document.getElementById('bgm');
+    const muteBtn = document.getElementById('muteBtn');
+    let bgmStarted = false;
+
+    function startBgm(){
+      if(bgmStarted) return;
+      bgmStarted = true;
+      bgm.volume = 0.5;
+      bgm.play().catch(()=>{ bgmStarted = false; });
+      updateMuteBtn();
+    }
+
+    function updateMuteBtn(){
+      if(!muteBtn) return;
+      muteBtn.textContent = (bgm && !bgm.paused) ? '🔇 മ്യൂട്ട്' : '🔊 പ്ലേ';
+    }
+
+    // Start music on ANY click/tap anywhere on the screen
+    window.addEventListener('pointerdown', startBgm);
+
+    // Mute/Play toggle (second page button)
+    if(muteBtn){
+      muteBtn.addEventListener('click', ()=>{
+        if(bgm.paused){
+          bgm.play().then(updateMuteBtn).catch(()=>{});
+        } else {
+          bgm.pause();
+          updateMuteBtn();
+        }
+      });
+    }
+
+    // Ensure label reflects initial state
+    updateMuteBtn();
+    // ------------------------------------------
+  </script>
 </body>
 </html>
